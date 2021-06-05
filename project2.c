@@ -19,12 +19,6 @@ struct AdjacenyList{ // list
 typedef struct AdjacenyList AdjacenyList;
 typedef AdjacenyList *AdjacenyListPtr;
 
-struct Graph {
-  int numVertices;
-  struct  AdjacenyListPtr adjListArray;
-};
-typedef struct Graph Graph;
-typedef Graph *GraphPtr;
 
 struct Edge{
 	char from;
@@ -43,32 +37,40 @@ int main(int argc, char **argv) {
 	
 	int size = 0;
 	
+	AdjacenyListPtr ajdList = (AdjacenyListPtr)malloc(sizeof(AdjacenyList));
+	VertexNodePtr currentHead;
 	
-	char nodeFirst;
-	char nodeSecond;
+	char firstX;
+	char firstY;
+	char currentX;
+	char currentY;
+	char currentDistance;
+	int firstDistance;
 	int distance;
-	char previousNode;
+	char nodeX;
+	char nodeY;
 	
-	fscanf(cfPtr, "%s%s%d", nodeFirst, nodeSecond, &distance);
-	previousNode = nodeFirst;
+	//Firstly create first head and second node that connect with head vertex
+	fscanf(cfPtr, "%s%s%d", firstX, firstY, &firstDistance);
+	currentHead = newVertexNode(firstX, 0);
+	VertexNodePtr secondVertex = newVertexNode(firstY, firstDistance);
+	addVertexList(headA, secondVertex);
 	
+	//secondly continue crate vertex and add headPtr while if headPtr name equals currentName
+	//if diffrent names than will be new head create and new vertexes add to that head
 	while (!feof(cfPtr)){ // while not end of file
-		
+		fscanf(cfPtr, "%s%s%d", currentX, currentY, &currentDistance);
+		if(currentX == firstX){
+			VertexNodePtr currentVertex = newVertexNode(currentY, currentDistance);
+			addVertexList(headA, currentVertex);
+		}
+		else {
+			currentHead = newVertexNode(currentX, 0);
+			VertexNodePtr currentVertex = newVertexNode(currentY, currentDistance);
+			addVertexList(currentHead, currentVertex);
+		}
 	}
-	
-	while (!feof(cfPtr)){ // while not end of file
-	
-	fscanf(cfPtr, "%s%s%d", nodeFirst, nodeSecond, &distance); 
-	if (nodeFirst == previousNode){
-		VertexNodePtr headA = newVertexNode(nodeFirst, 0);
-	headA->next = newVertexNode(nodeSecond, distance); 
-	}
-	
-	
-	
-	
-	
-	}
+
 
 	/*
 	2.
@@ -90,12 +92,24 @@ int main(int argc, char **argv) {
 }
 
 VertexNodePtr newVertexNode(char name, int cost){
-     VertexNodePtr newNode = (VertexNodePtr)malloc(sizeof(VertexNode));
+    VertexNodePtr newNode = (VertexNodePtr)malloc(sizeof(VertexNode));
     newNode->name = name;
     newNode->cost = cost;
     newNode->next = NULL;
     return newNode;
 } // end of newVertexNode
+
+
+VertexNodePtr addVertexList(VertexNodePtr headPtr, VertexNodePtr newVertex){
+	
+	while(headPtr->next != NULL){
+		headPtr = headPtr->next;
+	}
+	headPtr->next = newVertex;
+	
+	return headPtr;
+}
+/*
 
 struct GraphPtr createGraph(int numberOfVertex){
 
@@ -115,7 +129,7 @@ struct GraphPtr createGraph(int numberOfVertex){
  
     return graph;
 }
-
+*/
 
 void dijkstraAlgorithm(char sourceVertex, char *vertex){
 	int startVertex = 0;
