@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
 	2.
 	Create list and print like these 
 	A : B, 3 C, 5 D,6
-	B : ………………
+	B : â€¦â€¦â€¦â€¦â€¦â€¦
 	*/
 	
 	/*
